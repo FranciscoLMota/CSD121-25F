@@ -1,7 +1,7 @@
 package main.java.lab3;
 
-import main.java.lab3.game.Board;
-import main.java.lab3.game.Play;
+import main.java.lab3.game.*;
+
 
 public class Main {
 
@@ -10,14 +10,13 @@ public class Main {
         // Initialize a TicTacToe game with a 3x3 board and two players
         var game = new Board();
 
-        IO.print(game.checkWin(Play.PO));
 
-//        while (true) {
-//            // TODO: Display the board
-//
-//            // TODO: Check if the game is over or a draw, and if so display the result and exit
-//
-//            // TODO: Get the next move from the player and update the game state
-//        }
+        while (true) {
+            // TODO: Display the board
+
+            // TODO: Check if the game is over or a draw, and if so display the result and exit
+
+            // TODO: Get the next move from the player and update the game state
+        }
     }
 }

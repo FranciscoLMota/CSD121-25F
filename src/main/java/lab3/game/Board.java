@@ -3,8 +3,6 @@ package main.java.lab3.game;
 import static main.java.lab3.game.Play.*;
 
 public class Board {
-    // TODO: encapsulate the representation of the tictactoe board and provide instance methods to access and update it
-
     public Play[][] board = {
             {EMPTY, EMPTY, EMPTY},
             {EMPTY, EMPTY, EMPTY},
@@ -17,6 +15,10 @@ public class Board {
 
     public void setPosition(int row, int col, Play mark) {
         board[row][col] = mark;
+    }
+
+    public boolean checkPosition(int row, int col) {
+        return this.getPosition(row, col) == EMPTY;
     }
 
     /**
@@ -43,13 +45,19 @@ public class Board {
 
         //Checks for diagonal wins
         //TODO: improve this somehow
-        if ((board[0][0] == play && board[1][1] == play && board[2][2] == play) ||
-                board[0][2] == play && board[1][1] == play && board[2][0] == play
-        ) {
-            return true;
-        }
-
-        return false;
+        return (board[0][0] == play && board[1][1] == play && board[2][2] == play) ||
+                (board[0][2] == play && board[1][1] == play && board[2][0] == play);
     }
 
+    public boolean checkDraw() {
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
+                if(this.getPosition(row, col) == EMPTY) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
