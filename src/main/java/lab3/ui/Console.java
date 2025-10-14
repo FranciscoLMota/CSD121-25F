@@ -16,23 +16,30 @@ public class Console{
         }
     }
 
-    public static int[] getMoves(Play player) {
+
+
+    public static int[] getMoves(Play player,Board game) {
 
         IO.println("Player " + player + ", enter your move: ");
         String input = IO.readln();
-        var positions = input.split(" ");
+        var positions = input.trim().replaceAll(" +", " ").split(" ");
         if (positions.length != 2){
             IO.println("Invalid position! ");
-            return getMoves(player);
+            return getMoves(player, game);
         } else {
             int row = getResults(positions[0]);
             int col = getResults(positions[1]);
 
             if(row == -1 || col == -1) {
                 IO.println("Invalid position! ");
-                return getMoves(player);
+                return getMoves(player, game);
             }
-            return new int[]{row, col};
+            if(game.checkPosition(row,col)) {
+                return new int[]{row, col};
+            } else{
+                IO.println("Invalid position! Position taken! ");
+                return getMoves(player, game);
+            }
         }
     }
 
@@ -44,4 +51,13 @@ public class Console{
             default -> -1;
         };
     }
+
+    public static void displayWin(Play play){
+        IO.println("Player " + play + " won!!!");
+    }
+
+    public static void displayDraw(){
+        IO.println("It's a draw. Everyone loses");
+    }
 }
+

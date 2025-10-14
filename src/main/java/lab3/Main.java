@@ -10,24 +10,30 @@ public class Main {
 
         // Initialize a TicTacToe game with a 3x3 board and two players
         var game = new Board();
-        Console.displayBoard(game);
         Play currentPlayer = Play.PX;
         int[] currentPosition = {-1,-1};
 
 
 
         while (true) {
-            // TODO: Display the board
-              Console.displayBoard(game);
-            // TODO: Check if the game is over or a draw, and if so display the result and exit
+           Console.displayBoard(game); //Show board
 
-
-            // TODO: Get the next move from the player and update the game state
-
-            currentPosition = Console.getMoves(currentPlayer);
-
+            currentPosition = Console.getMoves(currentPlayer, game);
             game.setPosition(currentPosition[0], currentPosition[1],  currentPlayer);
-           currentPlayer = switchPlayer(currentPlayer);
+
+            if(game.checkWin(currentPlayer)){
+                Console.displayBoard(game);
+                Console.displayWin(currentPlayer);
+                System.exit(0);
+            }
+
+            if(game.checkDraw()) {
+                Console.displayBoard(game);
+                Console.displayDraw();
+                System.exit(0);
+            }
+
+            currentPlayer = switchPlayer(currentPlayer); //switch PX to PO
 
         }
     }
