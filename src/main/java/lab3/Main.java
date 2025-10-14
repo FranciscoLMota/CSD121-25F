@@ -1,7 +1,7 @@
 package lab3;
 
 import lab3.game.*;
-import lab3.ui.Console;
+import lab3.ui.*;
 
 public class Main {
 
@@ -9,8 +9,7 @@ public class Main {
 
 
         // Initialize a TicTacToe game with a 3x3 board and two players
-        var game = new Board();
-        Console.displayBoard(game);
+        var game = new lab3.game.Board();
         Play currentPlayer = Play.PX;
         int[] currentPosition = {-1,-1};
 
