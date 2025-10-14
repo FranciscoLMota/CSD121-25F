@@ -5,40 +5,48 @@ import lab3.ui.Console;
 
 public class Main {
 
-    static void main(String[] args) {
-
+    static void main() {
 
         // Initialize a TicTacToe game with a 3x3 board and two players
         var game = new Board();
-        Play currentPlayer = Play.PX;
-        int[] currentPosition = {-1,-1};
 
+        //Sets the initial player as X
+        Play currentPlayer = Play.PX;
+        int[] currentPosition;
 
 
         while (true) {
-           Console.displayBoard(game); //Show board
+            //Shows the current Board
+            Console.displayBoard(game);
 
+            // Requests the place where the player wants to leave his mark
+            // and validates the position
             currentPosition = Console.getMoves(currentPlayer, game);
-            game.setPosition(currentPosition[0], currentPosition[1],  currentPlayer);
 
-            if(game.checkWin(currentPlayer)){
+            //Sets the selected position to the board
+            game.setPosition(currentPosition[0], currentPosition[1], currentPlayer);
+
+            //Checks if there's a win and display message accordingly
+            if (game.checkWin(currentPlayer)) {
                 Console.displayBoard(game);
                 Console.displayWin(currentPlayer);
                 System.exit(0);
             }
 
-            if(game.checkDraw()) {
+            //Checks for a draw and display message accordingly
+            if (game.checkDraw()) {
                 Console.displayBoard(game);
                 Console.displayDraw();
                 System.exit(0);
             }
 
+            //Switches between the players
             currentPlayer = switchPlayer(currentPlayer); //switch PX to PO
 
         }
     }
 
-    public static Play switchPlayer(Play currentPlayer){
+    public static Play switchPlayer(Play currentPlayer) {
         return currentPlayer == Play.PX ? Play.PO : Play.PX;
 
     }

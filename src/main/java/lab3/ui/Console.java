@@ -17,7 +17,11 @@ public class Console{
     }
 
 
-
+    /**
+     * Requests the position from the player and validates if it is a viable position.
+     * If it is, returns the position. If not, requests again
+     *
+     */
     public static int[] getMoves(Play player,Board game) {
 
         IO.println("Player " + player + ", enter your move: ");
@@ -43,19 +47,31 @@ public class Console{
         }
     }
 
+    /**
+     * Translates the user input into array positions
+     *
+     */
     public static int getResults(String input) {
         return switch (input.toUpperCase()) {
             case "0", "T", "L" -> 0;
             case "1", "M" -> 1;
             case "2", "B", "R" -> 2;
-            default -> -1;
+            default -> -1; //Safeguard for invalid inputs
         };
     }
 
+    /**
+     * Displays the message for a player win
+     *
+     */
     public static void displayWin(Play play){
         IO.println("Player " + play + " won!!!");
     }
 
+    /**
+     * Displays the message for Draw
+     *
+     */
     public static void displayDraw(){
         IO.println("It's a draw. Everyone loses");
     }
