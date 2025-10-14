@@ -1,6 +1,6 @@
-package main.java.lab3.game;
+package lab3.game;
 
-import static main.java.lab3.game.Play.*;
+import static lab3.game.Play.*;
 
 public class Board {
     public Play[][] board = {
