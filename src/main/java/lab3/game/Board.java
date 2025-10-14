@@ -1,6 +1,6 @@
-package main.java.lab3.game;
+package lab3.game;
 
-import static main.java.lab3.game.Play.*;
+import static lab3.game.Play.*;
 
 public class Board {
     // TODO: encapsulate the representation of the tictactoe board and provide instance methods to access and update it

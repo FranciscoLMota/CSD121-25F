@@ -1,4 +1,4 @@
-package main.java.lab3.game;
+package lab3.game;
 
 /**
  * Represents the different states a spot in the board can be
