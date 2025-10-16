@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage stage) {
         Label label = new Label("JavaFX is working!");
@@ -18,8 +17,46 @@ public class Main extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    static void main() {
         launch();
+//        // Initialize a TicTacToe game with a 3x3 board and two players
+//        var game = new Board();
+//
+//        //Sets the initial player as X
+//        Play currentPlayer = Play.PX;
+//        int[] currentPosition;
+//
+//
+//
+//        while (true) {
+//            //Shows the current Board
+//            Console.displayBoard(game);
+//
+//            // Requests the place where the player wants to leave his mark
+//            // and validates the position
+//            currentPosition = Console.getMoves(currentPlayer, game);
+//
+//            //Sets the selected position to the board
+//            game.setPosition(currentPosition[0], currentPosition[1], currentPlayer);
+//
+//            //Checks if there's a win and display message accordingly
+//            if (game.checkWin(currentPlayer)) {
+//                Console.displayBoard(game);
+//                Console.displayWin(currentPlayer);
+//                System.exit(0);
+//            }
+//
+//            //Checks for a draw and display message accordingly
+//            if (game.checkDraw()) {
+//                Console.displayBoard(game);
+//                Console.displayDraw();
+//                System.exit(0);
+//            }
+//
+//            //Switches between the players
+//            currentPlayer = switchPlayer(currentPlayer); //switch PX to PO
+//
+//        }
     }
 
     public static Play switchPlayer(Play currentPlayer){
@@ -28,48 +65,5 @@ public class Main extends Application {
     }
 }
 
-//public class Main {
 
 
-//    static void main(String[] args) {
-//
-//
-//        // Initialize a TicTacToe game with a 3x3 board and two players
-//        var game = new Board();
-//
-//        IO.println("What's the name of the first player (X):");
-//        var px = IO.readln();
-//        IO.println("What's the name of the second player (O):");
-//        var ox = IO.readln();
-//
-//
-//        Play currentPlayer = Play.PX;
-//        int[] currentPosition = {-1,-1};
-//
-//
-//
-//        while (true) {
-//           Console.displayBoard(game); //Show board
-//
-//            currentPosition = Console.getMoves(currentPlayer, game);
-//            game.setPosition(currentPosition[0], currentPosition[1],  currentPlayer);
-//
-//            if(game.checkWin(currentPlayer)){
-//                Console.displayBoard(game);
-//                Console.displayWin(currentPlayer);
-//                System.exit(0);
-//            }
-//
-//            if(game.checkDraw()) {
-//                Console.displayBoard(game);
-//                Console.displayDraw();
-//                System.exit(0);
-//            }
-//
-//            currentPlayer = switchPlayer(currentPlayer); //switch PX to PO
-//
-//        }
-//    }
-
-
-//}

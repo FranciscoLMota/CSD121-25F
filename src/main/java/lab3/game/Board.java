@@ -17,6 +17,10 @@ public class Board {
         board[row][col] = mark;
     }
 
+    /**
+     * Validates if the selected position is free to be selected
+     *
+     */
     public boolean checkPosition(int row, int col) {
         return this.getPosition(row, col) == EMPTY;
     }
@@ -49,6 +53,10 @@ public class Board {
                 (board[0][2] == play && board[1][1] == play && board[2][0] == play);
     }
 
+    /**
+     * Checks if there is a draw (No available spaces on the board)
+     *
+     */
     public boolean checkDraw() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
