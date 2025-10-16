@@ -20,6 +20,7 @@ public class Console{
 
     public static int[] getMoves(Play player,Board game) {
 
+
         IO.println("Player " + player + ", enter your move: ");
         String input = IO.readln();
         var positions = input.trim().replaceAll(" +", " ").split(" ");
