@@ -1,33 +1,106 @@
 package lab3;
 
+import javafx.scene.layout.*;
 import lab3.game.*;
 import lab3.ui.Console;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
+
 
 public class Main extends Application {
+
+    private Label turnLabel;
+    private Board game;
+    private Play currentPlayer;
+
+
     @Override
     public void start(Stage stage) {
-        Label label = new Label("JavaFX is working!");
-        Scene scene = new Scene(label, 300, 200);
+        game = new Board();
+        // Create label for the turn
+        turnLabel = new Label("[Player X's turn]");
+
+        //Sets the initial player as X
+        currentPlayer = Play.PX;
+
+        // Create buttons
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(0));
+        grid.setHgap(0);
+        grid.setVgap(0);
+
+        // Add the positions
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                Button button = new Button();
+                button.setText(game.getPosition(row, col).toString()); // Sets the text as the position on the board
+                button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                button.setStyle("-fx-font-size: 24; -fx-pref-width: 100; -fx-pref-height: 100;");
+
+
+                int finalRow = row;
+                int finalCol = col;
+                button.setOnAction(_ -> handleMove(finalRow, finalCol, button));
+                grid.add(button, col, row);
+                GridPane.setHgrow(button, Priority.ALWAYS);
+                GridPane.setVgrow(button, Priority.ALWAYS);
+            }
+        }
+
+        // Position the label
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(10));
+        root.getChildren().addAll(turnLabel, grid);
+        VBox.setVgrow(grid, Priority.ALWAYS);
+
+        // Create Scene
+        Scene scene = new Scene(root, 300, 350);
         stage.setScene(scene);
-        stage.setTitle("Hello JavaFX");
+        stage.setTitle("TicTacToe");
         stage.show();
+    }
+
+    private void handleMove(int row, int col, Button button) {
+        IO.println("Clicked button at: (" + row + ", " + col + ")");
+        if (game.checkPosition(row, col)) {
+            game.setPosition(row, col, currentPlayer);
+            button.setText(game.getPosition(row, col).toString());
+
+            if (currentPlayer == Play.PX) {
+                button.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+
+            } else {
+                button.setTextFill(Color.WHITE);
+                button.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+            }
+
+            //Checks if there's a win and display message accordingly
+            if (game.checkWin(currentPlayer)) {
+                turnLabel.setText("Player " + currentPlayer + " Won!!!");
+
+            } else if (game.checkDraw()) {
+                //Checks for a draw and display message accordingly
+                turnLabel.setText("It's a Draw... :(");
+
+            } else {
+                switchPlayer();
+                turnLabel.setText("[Player " + currentPlayer + "'s turn]");
+            }
+
+
+        } else {
+            turnLabel.setText("[Player" + currentPlayer + "'s turn] Invalid position");
+        }
     }
 
     static void main() {
         launch();
-//        // Initialize a TicTacToe game with a 3x3 board and two players
-//        var game = new Board();
-//
-//        //Sets the initial player as X
-//        Play currentPlayer = Play.PX;
-//        int[] currentPosition;
-//
-//
-//
+
 //        while (true) {
 //            //Shows the current Board
 //            Console.displayBoard(game);
@@ -59,8 +132,8 @@ public class Main extends Application {
 //        }
     }
 
-    public static Play switchPlayer(Play currentPlayer){
-        return currentPlayer == Play.PX ? Play.PO : Play.PX;
+    public void switchPlayer() {
+        currentPlayer = (currentPlayer == Play.PX ? Play.PO : Play.PX);
 
     }
 }
