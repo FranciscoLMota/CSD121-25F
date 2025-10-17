@@ -1,5 +1,6 @@
 package lab3;
 
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 import lab3.game.*;
 import lab3.ui.Console;
@@ -10,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
+
+import java.util.List;
 
 
 public class Main extends Application {
@@ -58,6 +61,12 @@ public class Main extends Application {
         root.getChildren().addAll(turnLabel, grid);
         VBox.setVgrow(grid, Priority.ALWAYS);
 
+        Button resetButton = new Button("New Game");
+        resetButton.setOnAction(e -> resetBoard(grid)); // We'll define resetBoard below
+        root.getChildren().add(resetButton);
+
+
+
         // Create Scene
         Scene scene = new Scene(root, 300, 350);
         stage.setScene(scene);
@@ -98,6 +107,46 @@ public class Main extends Application {
         }
     }
 
+    private void resetBoard(GridPane grid) {
+        // Clear the Board logic object
+        game.resetGame();
+
+        // Reset button visuals
+        for (Node node : grid.getChildren()) {
+            if (node instanceof Button btn) {
+                btn.setText("");
+                btn.setDisable(false);
+                btn.setBackground(Background.EMPTY);
+                btn.setTextFill(Color.BLACK);
+                grid.setPadding(new Insets(0));
+                grid.setHgap(0);
+                grid.setVgap(0);
+                // Add the positions
+                for (int row = 0; row < 3; row++)
+                    for (int col = 0; col < 3; col++) {
+                        Button button = new Button();
+                        button.setText(game.getPosition(row, col).toString()); // Sets the text as the position on the board
+                        button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        button.setStyle("-fx-font-size: 24; -fx-pref-width: 100; -fx-pref-height: 100;");
+
+
+                        int finalRow = row;
+                        int finalCol = col;
+                        button.setOnAction(_ -> handleMove(finalRow, finalCol, button));
+                        grid.add(button, col, row);
+                        GridPane.setHgrow(button, Priority.ALWAYS);
+                        GridPane.setVgrow(button, Priority.ALWAYS);
+                    }
+            }
+
+        }
+
+        // Reset player and label
+        currentPlayer = Play.PX;
+        turnLabel.setText("[Player X's turn]");
+    }
+
+
     static void main() {
         launch();
 
@@ -134,7 +183,6 @@ public class Main extends Application {
 
     public void switchPlayer() {
         currentPlayer = (currentPlayer == Play.PX ? Play.PO : Play.PX);
-
     }
 }
 
