@@ -9,6 +9,14 @@ public class Board {
             {EMPTY, EMPTY, EMPTY},
     };
 
+    public void resetGame() {
+        for(int row = 0; row < board.length; row++){
+            for(int col = 0; col < board[row].length; col++){
+                setPosition(row, col, EMPTY);
+            }
+        }
+    }
+
     public Play getPosition(int row, int col) {
         return board[row][col];
     }
