@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+javafx-sdk-25/
+out/*
+### javafx-sdk-25/###
