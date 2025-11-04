@@ -4,11 +4,14 @@ import lab4.game.TicTacToeGame;
 import lab4.ui.Console;
 
 import static lab4.game.Board.Status.InProgress;
+import com.diogonunes.jcolor.AnsiFormat;
+import static com.diogonunes.jcolor.Attribute.*;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        AnsiFormat fWarning = new AnsiFormat(BLACK_TEXT(), BLUE_BACK(), BOLD());
 
         var player1 = Console.prompt("Player 1, what is your name? ");
         var player2 = Console.prompt("Player 2, what is your name? ");
@@ -29,9 +32,9 @@ public class Main {
             // Decide what to do next based on the current status of the game
             var status = game.getBoard().getStatus();
             switch (status) {
-                case XWins -> System.out.println(player1 + " wins!");
-                case OWins -> System.out.println(player2 + " wins!");
-                case Draw -> System.out.println("It's a draw!");
+                case XWins -> System.out.println(fWarning.format(player1 + " wins!"));
+                case OWins -> System.out.println(fWarning.format(player2 + " wins!"));
+                case Draw -> System.out.println(fWarning.format("It's a draw!"));
             }
 
             // Any status other than InProgress is an end-game state, so break out of the loop
