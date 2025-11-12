@@ -3,6 +3,9 @@ package lab4.ui;
 import lab4.game.*;
 
 import java.util.Scanner;
+import com.diogonunes.jcolor.AnsiFormat;
+import static com.diogonunes.jcolor.Attribute.*;
+
 
 /**
  * Helper methods for doing console-based user interaction
@@ -40,7 +43,7 @@ public class Console {
      * @return The position selected by the user
      */
     public static Position promptForPosition(String prompt, Board board) {
-
+        AnsiFormat fError = new AnsiFormat(YELLOW_TEXT(), RED_BACK());
 
         var scanner = new Scanner(System.in);
         final String helpMessage = "Input must be in the format 'row column', e.g., '1 2' or 't m' for the top middle cell.";
@@ -50,14 +53,14 @@ public class Console {
             var input = scanner.nextLine().trim();
 
             if ( input.length() != 3 ) {
-                System.out.println(helpMessage);
+                System.out.println(fError.format(helpMessage));
                 continue;
             }
 
             var parts = input.split(" ");
 
             if ( parts.length != 2 ) {
-                System.out.println(helpMessage);
+                System.out.println(fError.format(helpMessage));
                 continue;
             }
 
@@ -67,13 +70,13 @@ public class Console {
                 var pos = new Position(Row.from(parts[0]), Col.from(parts[1]));
 
                 if (board.isOccupiedAt(pos)) {
-                    System.out.println("That position is already taken.");
+                    System.out.println(fError.format("That position is already taken."));
                     continue;
                 }
 
                 return pos;
             } catch ( IllegalArgumentException e ) {
-                System.out.println(helpMessage);
+                System.out.println(fError.format(helpMessage));
             }
         }
     }
