@@ -1,8 +1,8 @@
-package tictactoe.ui;
+package lab5.ui;
 
 import com.diogonunes.jcolor.AnsiFormat;
-import tictactoe.game.*;
-import tictactoe.players.*;
+import lab5.game.*;
+import lab5.players.*;
 
 import java.util.Scanner;
 
@@ -54,11 +54,14 @@ public class Console {
 
                 switch ( input ) {
                     // E.g.
-                    // case "randy" -> { return new Randy(); }
-                    default -> printAlert("TODO: Implement computer players");
+                    case "circe" -> { return new Circe(); }
+                    case "linus" -> { return new Linus(); }
+                    case "randy" -> { return new Randy(); }
+                    case "omola" -> { return new Omola(); }
+                    default -> printAlert("No computer player called: " + input);
                 }
             } else {
-                return new Player(input);
+                return new HumanPlayer(input);
             }
         }
     }
