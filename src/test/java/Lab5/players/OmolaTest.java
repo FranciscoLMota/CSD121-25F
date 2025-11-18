@@ -8,7 +8,10 @@ import lab5.players.Omola;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OmolaTest {
     Board game;
@@ -18,6 +21,52 @@ public class OmolaTest {
     public void setUp() {
         game = new Board();
         omola = new Omola();
+    }
+
+    @Test
+    public void testFirstMove() {
+        List<Position> availablePositions = game.getEmptyCells();
+        Position selected = omola.pickNextMove(game);
+
+        boolean isInList = false;
+        for (Position availablePosition : availablePositions) {
+            if (availablePosition.equals(selected)) {
+                isInList = true;
+                break;
+            }
+        }
+
+        assertTrue(isInList,"The actual value should be present in the expected array.");
+    }
+
+    @Test
+    public void testNoWinningOption() {
+        /*
+         * X O X
+         * X O O
+         * . X .
+         */
+
+        game.placeX(new Position(Row.Top, Col.Left));
+        game.placeO(new Position(Row.Top, Col.Middle));
+        game.placeX(new Position(Row.Top, Col.Right));
+        game.placeO(new Position(Row.Middle, Col.Middle));
+        game.placeX(new Position(Row.Middle, Col.Left));
+        game.placeO(new Position(Row.Middle, Col.Right));
+        game.placeX(new Position(Row.Bottom, Col.Middle));
+
+        List<Position> availablePositions = List.of(new Position[]{new Position(Row.Bottom, Col.Left), new Position(Row.Bottom, Col.Right)});
+        Position selected = omola.pickNextMove(game);
+
+        boolean isInList = false;
+        for (Position availablePosition : availablePositions) {
+            if (availablePosition.equals(selected)) {
+                isInList = true;
+                break;
+            }
+        }
+
+        assertTrue(isInList,"The actual value should be present in the expected array.");
     }
 
     @Test
@@ -34,7 +83,7 @@ public class OmolaTest {
          *  E = Expected
          */
 
-        assertEquals(new Position(Row.Bottom, Col.Left), omola.pickNextMove(game), "Omola should pick Bottom Left." );
+        assertEquals(new Position(Row.Bottom, Col.Left), omola.pickNextMove(game), "Omola should pick Bottom Left.");
 
     }
 
@@ -50,7 +99,7 @@ public class OmolaTest {
          *  E = Expected
          */
 
-        assertEquals(new Position(Row.Top, Col.Right), omola.pickNextMove(game), "Omola should pick Top Right." );
+        assertEquals(new Position(Row.Top, Col.Right), omola.pickNextMove(game), "Omola should pick Top Right.");
 
     }
 
@@ -68,7 +117,7 @@ public class OmolaTest {
          *  E = Expected
          */
 
-        assertEquals(new Position(Row.Middle, Col.Right), omola.pickNextMove(game), "Omola should pick Middle Right, prioritizing winning over blocking the X." );
+        assertEquals(new Position(Row.Middle, Col.Right), omola.pickNextMove(game), "Omola should pick Middle Right, prioritizing winning over blocking the X.");
 
     }
 
