@@ -2,18 +2,13 @@ package lab6.tools;
 
 import javafx.scene.image.Image;
 import javafx.animation.FadeTransition;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import java.util.function.Consumer;
 
 public class UI {
     private int currentBG = 1;
@@ -22,16 +17,12 @@ public class UI {
     private final Rectangle blackOverlay;
     private final HBox box = new HBox(5); // spacing = 5
 
-
-    private final Consumer<String> onBackgroundChange;
-
     /**
      * Sets up the UI with a background image, overlay, and buttons to switch backgrounds.
      * Preconditions: width/height should be valid.
      * Postconditions: UI elements are created and positioned.
      */
-    public UI(double width, double height, Consumer<String> onBackgroundChange) {
-        this.onBackgroundChange = onBackgroundChange;
+    public UI(double width, double height) {
 
         // Background
         background = new ImageView(loadImage("bgs/bg1.png"));
@@ -50,14 +41,12 @@ public class UI {
         left.setOnAction(e -> switchBackground(-1));
         right.setOnAction(e -> switchBackground(1));
 
-        // Add buttons to VBox
+        // Add buttons to HBox
         box.getChildren().addAll(left, right);
 
         // Position top-left
         box.setTranslateX(160);
         box.setTranslateY(350);
-
-
     }
 
     /**
@@ -92,16 +81,10 @@ public class UI {
             fadeIn.setFromValue(1);
             fadeIn.setToValue(0);
             fadeIn.play();
-
-            // Callback to Main if needed
-            if (onBackgroundChange != null) {
-                onBackgroundChange.accept(nextImage);
-            }
         });
 
         fadeOut.play();
     }
-
 
     /**
      * Returns the background ImageView.
@@ -127,4 +110,3 @@ public class UI {
         return new javafx.scene.image.Image(UI.class.getResource("/lab6/images/" + fileName).toString());
     }
 }
-

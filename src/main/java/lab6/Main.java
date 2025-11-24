@@ -38,7 +38,7 @@ public class Main extends Application {
 
         // Interactive UI
         Pane bgButtonsLayer = new Pane();
-        UI ui = new UI(screenSize, screenSize, null);
+        UI ui = new UI(screenSize, screenSize);
         bgButtonsLayer.getChildren().add(ui.getButtons());
 
         Pane foodLayer = new Pane();
