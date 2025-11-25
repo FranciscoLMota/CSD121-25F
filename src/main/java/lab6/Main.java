@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
@@ -19,6 +20,11 @@ public class Main extends Application {
 
     public final int screenSize = 384;
     public boolean canEvolve = true;
+    public boolean canFlee = true;
+    public int timeUnhappy = 0;
+    public Pane backgroundLayer = new Pane();
+    public Pane overlayLayer = new Pane();
+    public Pane bgButtonsLayer = new Pane();
 
 
     @Override
@@ -37,7 +43,7 @@ public class Main extends Application {
         hudLayer.getChildren().add(petUI.getNode());
 
         // Interactive UI
-        Pane bgButtonsLayer = new Pane();
+
         UI ui = new UI(screenSize, screenSize);
         bgButtonsLayer.getChildren().add(ui.getButtons());
 
@@ -56,9 +62,7 @@ public class Main extends Application {
         evolveLayer.getChildren().add(evolveButton);
 
         // Background layer
-        Pane backgroundLayer = new Pane();
         backgroundLayer.getChildren().add(ui.getBackground());
-        Pane overlayLayer = new Pane();
         overlayLayer.getChildren().add(ui.getOverlay());
         overlayLayer.setMouseTransparent(true);
 
@@ -79,6 +83,7 @@ public class Main extends Application {
                 {
                     checkEvolution(mainPet, evolveButton);
                     petUI.update(mainPet.getHunger(), mainPet.getHappiness(), mainPet.getAge());
+                    checkFleePet(root, mainPet);
                 }));
         uiUpdater.setCycleCount(Timeline.INDEFINITE);
         uiUpdater.play();
@@ -119,6 +124,28 @@ public class Main extends Application {
         canEvolve = false;
 
         evolveButton.setDisable(true);
+    }
+
+    private void checkFleePet(Pane root, Pet mainPet) {
+            if((mainPet.getHappiness() < 20 || mainPet.getHunger() < 20 ) && canFlee) {
+                if(timeUnhappy > 60) {
+                    root.getChildren().removeIf(node ->
+                            node != backgroundLayer &&
+                                    node != overlayLayer &&
+                                    node != bgButtonsLayer
+                    );
+                    Label fleeLabel = new Label("Your pet fled due to neglect!");
+                    fleeLabel.setStyle("-fx-background-color: #353839;-fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: \"Verdana\";  -fx-padding: 10px;");
+                    fleeLabel.setTranslateX(60);
+                    fleeLabel.setTranslateY(170);
+                    root.getChildren().add(fleeLabel);
+                    canFlee = false;
+                }
+                timeUnhappy++;
+                IO.println("Time unhappy: " + timeUnhappy);
+            } else {
+                timeUnhappy = 0;
+            }
     }
 
     static void main() {

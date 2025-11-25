@@ -57,7 +57,7 @@ public class UI {
     private void switchBackground(int direction) {
         currentBG += direction;
 
-        int BG_COUNT = 3;
+        int BG_COUNT = 6;
         if (currentBG > BG_COUNT) currentBG = 1;
         if (currentBG < 1) currentBG = BG_COUNT;
 

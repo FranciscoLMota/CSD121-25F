@@ -13,7 +13,7 @@ import java.util.Random;
 public abstract class Pet {
 
     protected int age = 0;
-    protected int hunger = 90;
+    protected int hunger = 0;
     protected int happiness = 90;
     protected final Pane wrapper = new Pane();
     protected final ImageView petView = new ImageView();
@@ -105,7 +105,7 @@ public abstract class Pet {
                 new KeyFrame(Duration.seconds(animationLoop), e -> {
                     updateStats();
                     move();
-                    this.age = this.age + 5;
+                    this.age = this.age + 25;
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);

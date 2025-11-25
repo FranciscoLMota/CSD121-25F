@@ -20,13 +20,13 @@ public class PetUI {
      * Postconditions: uiBox is positioned at top left.
      */
     public PetUI() {
-        Label hungerLabel = new Label("Hunger:     ");
+        Label hungerLabel = new Label("Hunger:    ");
         Label happinessLabel = new Label("Happiness:");
-        Label ageLabel = new Label("Age:          ");
+        Label ageLabel = new Label("Age:         ");
 
-        hungerLabel.setStyle("-fx-background-color: #FFFFFF;");
-        happinessLabel.setStyle("-fx-background-color: #FFFFFF;");
-        ageLabel.setStyle("-fx-background-color: #FFFFFF;");
+        hungerLabel.setStyle("-fx-background-color: #353839;-fx-text-fill: white; -fx-font-family: \"Verdana\";  -fx-padding: 3px;");
+        happinessLabel.setStyle("-fx-background-color: #353839;-fx-text-fill: white; -fx-font-family: \"Verdana\";  -fx-padding: 3px;");
+        ageLabel.setStyle("-fx-background-color: #353839;-fx-text-fill: white; -fx-font-family: \"Verdana\";  -fx-padding: 3px;");
 
         hungerBar.setPrefWidth(150);
         happinessBar.setPrefWidth(150);
