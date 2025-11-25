@@ -4,8 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
@@ -19,13 +17,6 @@ import lab6.tools.UI;
 public class Main extends Application {
 
     public final int screenSize = 384;
-    public boolean canEvolve = true;
-    public boolean canFlee = true;
-    public int timeUnhappy = 0;
-    public Pane backgroundLayer = new Pane();
-    public Pane overlayLayer = new Pane();
-    public Pane bgButtonsLayer = new Pane();
-
 
     @Override
     public void start(Stage stage) {
@@ -33,36 +24,31 @@ public class Main extends Application {
         Pane root = new Pane();
 
         // Pet setup
-        Pet mainPet = new Baby(screenSize);
+        final Pet[] mainPet = {new Baby(screenSize)};
         PetUI petUI = new PetUI();
+        Pane petLayer = new Pane();
+        petLayer.setUserData("PET");
+        petLayer.getChildren().add(mainPet[0].getNode());
 
         //Pet Info
-        Pane petLayer = new Pane();
-        petLayer.getChildren().add(mainPet.getNode());
         Pane hudLayer = new Pane();
+        hudLayer.setUserData("PET");
         hudLayer.getChildren().add(petUI.getNode());
 
         // Interactive UI
-
         UI ui = new UI(screenSize, screenSize);
+        Pane bgButtonsLayer = new Pane();
         bgButtonsLayer.getChildren().add(ui.getButtons());
-
         Pane foodLayer = new Pane();
-        FoodUI foodUI = new FoodUI(mainPet);
+        foodLayer.setUserData("PET");
+        FoodUI foodUI = new FoodUI(mainPet[0]);
         foodLayer.getChildren().add(foodUI.getNode());
 
-        // Evolve content
-        Pane evolveLayer = new Pane();
-        Button evolveButton = new Button("Evolve");
-        evolveButton.setOnAction(e -> evolvePet(petLayer, mainPet, evolveButton));
-        evolveButton.setDisable(true);
-
-        evolveButton.setTranslateX(320);
-        evolveButton.setTranslateY(350);
-        evolveLayer.getChildren().add(evolveButton);
-
         // Background layer
+        Pane backgroundLayer = new Pane();
         backgroundLayer.getChildren().add(ui.getBackground());
+
+        Pane overlayLayer = new Pane();
         overlayLayer.getChildren().add(ui.getOverlay());
         overlayLayer.setMouseTransparent(true);
 
@@ -72,7 +58,6 @@ public class Main extends Application {
                 overlayLayer,
                 petLayer,
                 hudLayer,
-                evolveLayer,
                 bgButtonsLayer,
                 foodLayer
         );
@@ -81,15 +66,27 @@ public class Main extends Application {
         Timeline uiUpdater = new Timeline(
                 new KeyFrame(Duration.seconds(0.5), e ->
                 {
-                    checkEvolution(mainPet, evolveButton);
-                    petUI.update(mainPet.getHunger(), mainPet.getHappiness(), mainPet.getAge());
-                    checkFleePet(root, mainPet);
+                    //Updates PetUI - Since I supply the pet here,
+                    petUI.update(mainPet[0]);
+
+                    //Check if the pet will flee
+                    mainPet[0].checkFleePet(root);
+
+                    //Check if the pet is ready to evolve
+                    Pet evolved = mainPet[0].evolution(petLayer);
+
+                    //If it evolved, update the pet and update the references in the Food UI
+                    if (evolved != mainPet[0]) {
+                        mainPet[0] = evolved;
+                        foodUI.setPet(evolved);
+                    }
                 }));
+
         uiUpdater.setCycleCount(Timeline.INDEFINITE);
         uiUpdater.play();
 
         // Start pet animation
-        mainPet.startAnimation();
+        mainPet[0].startAnimation();
 
         // Scene setup
         Scene scene = new Scene(root, screenSize, screenSize);
@@ -97,55 +94,6 @@ public class Main extends Application {
         stage.setResizable(false);
         stage.setTitle("Pet Sim v0.1");
         stage.show();
-    }
-
-    private void checkEvolution(Pet mainPet, Button evolveButton) {
-        if (mainPet.getAge() > 100 && canEvolve) {
-            evolveButton.setDisable(false);
-        }
-    }
-
-    private void evolvePet(Pane petLayer, Pet mainPet, Button evolveButton) {
-
-        petLayer.getChildren().remove(mainPet.getNode());
-
-        int h = mainPet.getHappiness();
-
-        if (h > 65) {
-            mainPet = new GoodCarePet(this.screenSize);
-        } else if (h > 33) {
-            mainPet = new MidCarePet(this.screenSize);
-        } else {
-            mainPet = new BadCarePet(this.screenSize);
-        }
-
-        petLayer.getChildren().add(mainPet.getNode());
-        mainPet.startAnimation();
-        canEvolve = false;
-
-        evolveButton.setDisable(true);
-    }
-
-    private void checkFleePet(Pane root, Pet mainPet) {
-            if((mainPet.getHappiness() < 20 || mainPet.getHunger() < 20 ) && canFlee) {
-                if(timeUnhappy > 60) {
-                    root.getChildren().removeIf(node ->
-                            node != backgroundLayer &&
-                                    node != overlayLayer &&
-                                    node != bgButtonsLayer
-                    );
-                    Label fleeLabel = new Label("Your pet fled due to neglect!");
-                    fleeLabel.setStyle("-fx-background-color: #353839;-fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: \"Verdana\";  -fx-padding: 10px;");
-                    fleeLabel.setTranslateX(60);
-                    fleeLabel.setTranslateY(170);
-                    root.getChildren().add(fleeLabel);
-                    canFlee = false;
-                }
-                timeUnhappy++;
-                IO.println("Time unhappy: " + timeUnhappy);
-            } else {
-                timeUnhappy = 0;
-            }
     }
 
     static void main() {

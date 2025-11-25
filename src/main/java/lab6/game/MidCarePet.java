@@ -15,6 +15,15 @@ public class MidCarePet extends Pet {
 
     public MidCarePet(int sceneSize) {
         super(sceneSize);
+        this.isEvolved = true;
+    }
+
+    public MidCarePet(int sceneSize, int hunger, int happiness, int age) {
+        super(sceneSize);
+        this.isEvolved = true;
+        this.hunger = hunger;
+        this.happiness = happiness;
+        this.age = age;
     }
 
     @Override

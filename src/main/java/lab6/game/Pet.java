@@ -2,22 +2,29 @@ package lab6.game;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class Pet {
 
     protected int age = 0;
-    protected int hunger = 0;
+    protected int hunger = 90;
     protected int happiness = 90;
     protected final Pane wrapper = new Pane();
     protected final ImageView petView = new ImageView();
     protected final Random random = new Random();
+    protected final int timeToFlee = 60;
+    protected boolean isEvolved = false;
+    protected boolean canFlee = true;
+    protected int timeUnhappy = 0;
 
     protected int sceneSize;
     protected final int bottomArea = 250;
@@ -67,6 +74,46 @@ public abstract class Pet {
      */
     public Node getNode() {
         return wrapper;
+    }
+
+
+    public Pet evolution(Pane petLayer) {
+        if(!this.isEvolved && this.age > 100) {
+            petLayer.getChildren().remove(this.getNode());
+
+            int h = this.getHappiness();
+            Pet newPet;
+            if (h > 65) {
+                newPet = new GoodCarePet(this.sceneSize, this.hunger, this.happiness, this.age);
+            } else if (h > 33) {
+                newPet = new MidCarePet(this.sceneSize, this.hunger, this.happiness, this.age);
+            } else {
+                newPet = new BadCarePet(this.sceneSize, this.hunger, this.happiness, this.age);
+            }
+
+            petLayer.getChildren().add(newPet.getNode());
+            newPet.startAnimation();
+
+            return newPet;
+        }
+
+        return this;
+    }
+
+    public void setCanFlee(boolean canFlee) {
+        this.canFlee = canFlee;
+    }
+
+    public boolean canFlee() {
+        return canFlee;
+    }
+
+    public void setTimeUnhappy(int timeUnhappy) {
+        this.timeUnhappy = timeUnhappy;
+    }
+
+    public int getTimeUnhappy() {
+        return timeUnhappy;
     }
 
     /**
@@ -152,6 +199,34 @@ public abstract class Pet {
         happiness += amount;
         if (happiness < 0) happiness = 0;
         if (happiness > 100) happiness = 100;
+    }
+
+    public void checkFleePet(Pane root) {
+        if((this.getHappiness() < 20 || this.getHunger() < 20 ) && this.canFlee()) {
+            if(this.getTimeUnhappy() > timeToFlee) {
+
+                List<Node> toRemove = new ArrayList<>();
+
+                for (Node node : root.getChildren()) {
+                    if ("PET".equals(node.getUserData())) {
+                        toRemove.add(node);
+                    }
+                }
+
+                root.getChildren().removeAll(toRemove);
+
+                Label fleeLabel = new Label("Your pet fled due to neglect!");
+                fleeLabel.setStyle("-fx-background-color: #353839;-fx-text-fill: white; -fx-font-size: 18px; -fx-font-family: \"Verdana\";  -fx-padding: 10px;");
+                fleeLabel.setTranslateX(60);
+                fleeLabel.setTranslateY(170);
+                root.getChildren().add(fleeLabel);
+                this.setCanFlee(false);
+            }
+            this.setTimeUnhappy(this.getTimeUnhappy() + 1);
+            IO.println("Time unhappy: " + this.getTimeUnhappy());
+        } else {
+            this.setTimeUnhappy(0);
+        }
     }
 
 

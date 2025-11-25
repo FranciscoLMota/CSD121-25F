@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lab6.game.Pet;
 
 
 public class PetUI {
@@ -56,9 +57,9 @@ public class PetUI {
     /**
      * Updates the bars.
      */
-    public void update(int hunger, int happiness, int age) {
-        hungerBar.setProgress(hunger / 100.0);
-        happinessBar.setProgress(happiness / 100.0);
-        ageBar.setProgress(age / 100.0);
+    public void update(Pet pet) {
+        hungerBar.setProgress(pet.getHunger() / 100.0);
+        happinessBar.setProgress(pet.getHappiness() / 100.0);
+        ageBar.setProgress(pet.getAge() / 100.0);
     }
 }

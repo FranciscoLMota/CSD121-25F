@@ -12,6 +12,15 @@ public class BadCarePet extends Pet {
 
     public BadCarePet(int screenSize) {
         super(screenSize);
+        this.isEvolved = true;
+    }
+
+    public BadCarePet(int sceneSize, int hunger, int happiness, int age) {
+        super(sceneSize);
+        this.isEvolved = true;
+        this.hunger = hunger;
+        this.happiness = happiness;
+        this.age = age;
     }
 
     @Override

@@ -9,7 +9,7 @@ import lab6.game.Pet;
 public class FoodUI {
 
     private final VBox box = new VBox(5); // spacing = 5
-
+    private Pet pet;
     /**
      * Constructs the FoodUI panel, creating food objects, generating
      * their corresponding buttons, and positioning them inside a VBox.
@@ -20,15 +20,16 @@ public class FoodUI {
      * - Positions the UI in the left bottom of screen.
      */
     public FoodUI(Pet pet) {
+        this.pet = pet;
         // Create foods
         Food burger = new Food("Burger", 10, 5, UI.loadImage("food/Burger.png"));
         Food treat = new Food("Treat", 0, 15, UI.loadImage("food/Treat.png"));
         Food salad = new Food("Salad", 20, -10, UI.loadImage("food/Salad.png"));
 
         // Create buttons
-        Button burgerBtn = createFoodButton(burger, pet);
-        Button treatBtn = createFoodButton(treat, pet);
-        Button saladBtn = createFoodButton(salad, pet);
+        Button burgerBtn = createFoodButton(burger);
+        Button treatBtn = createFoodButton(treat);
+        Button saladBtn = createFoodButton(salad);
 
         // Add buttons to VBox
         box.getChildren().addAll(burgerBtn, treatBtn, saladBtn);
@@ -47,6 +48,10 @@ public class FoodUI {
         return box;
     }
 
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
+
     /**
      * Creates a button that displays the food and feeds the pet when clicked.
      * Preconditions:
@@ -54,14 +59,19 @@ public class FoodUI {
      * Postconditions:
      * - A Button is created that sends pet.feed(food)
      */
-    private Button createFoodButton(Food food, Pet pet) {
+    private Button createFoodButton(Food food) {
         ImageView view = new ImageView(food.image());
         view.setFitWidth(25);
         view.setFitHeight(25);
 
         Button btn = new Button();
         btn.setGraphic(view);
-        btn.setOnAction(e -> pet.feed(food));
+
+        btn.setOnAction(e -> {
+            if (pet != null) {
+                pet.feed(food);
+            }
+        });
 
         return btn;
     }
