@@ -10,11 +10,6 @@ public class GoodCarePet extends Pet {
 
     private static final Image GOOD_CARE_IMAGE = UI.loadImage("pets/Pochitchi.png");
 
-    public GoodCarePet(int sceneSize) {
-        super(sceneSize);
-        this.isEvolved = true;
-    }
-
     public GoodCarePet(int sceneSize, int hunger, int happiness, int age) {
         super(sceneSize);
         this.isEvolved = true;

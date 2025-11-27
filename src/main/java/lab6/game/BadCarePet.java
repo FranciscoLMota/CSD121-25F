@@ -10,11 +10,6 @@ public class BadCarePet extends Pet {
 
     private static final Image BAD_CARE_IMAGE = UI.loadImage("pets/Batchi.png");
 
-    public BadCarePet(int screenSize) {
-        super(screenSize);
-        this.isEvolved = true;
-    }
-
     public BadCarePet(int sceneSize, int hunger, int happiness, int age) {
         super(sceneSize);
         this.isEvolved = true;

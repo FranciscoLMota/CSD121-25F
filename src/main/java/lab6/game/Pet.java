@@ -18,17 +18,20 @@ public abstract class Pet {
     protected int age = 0;
     protected int hunger = 90;
     protected int happiness = 90;
+    protected int timeUnhappy = 0;
+    protected int sceneSize;
+
+    protected boolean isEvolved = false;
+    protected boolean canFlee = true;
+
+    protected final int bottomArea = 250;
+    protected final int timeToFlee = 60;
+
+    protected final double animationLoop;
+
     protected final Pane wrapper = new Pane();
     protected final ImageView petView = new ImageView();
     protected final Random random = new Random();
-    protected final int timeToFlee = 60;
-    protected boolean isEvolved = false;
-    protected boolean canFlee = true;
-    protected int timeUnhappy = 0;
-
-    protected int sceneSize;
-    protected final int bottomArea = 250;
-    protected final double animationLoop;
 
     //Image of the pet and their size
     protected abstract Image getPetImage();
@@ -76,7 +79,11 @@ public abstract class Pet {
         return wrapper;
     }
 
-
+    /**
+     * Controls the evolution of the pet if its got the conditions to evolve.
+     * Postconditions:
+     * - Returns a Pet that represents the instance of evolution..
+     */
     public Pet evolution(Pane petLayer) {
         if(!this.isEvolved && this.age > 100) {
             petLayer.getChildren().remove(this.getNode());
@@ -104,14 +111,26 @@ public abstract class Pet {
         this.canFlee = canFlee;
     }
 
+    /**
+     * Retrieves if the pet can flee.
+     * Postconditions: Returns an boolean representing if the pet can flee.
+     */
     public boolean canFlee() {
         return canFlee;
     }
 
+    /**
+     * Sets the time that the pets been unhappy.
+     * Postconditions: Sets the time that the pet been unhappy.
+     */
     public void setTimeUnhappy(int timeUnhappy) {
         this.timeUnhappy = timeUnhappy;
     }
 
+    /**
+     * Retrieves if the pet can flee.
+     * Postconditions: Returns an int representing the time that the pet is unhappy..
+     */
     public int getTimeUnhappy() {
         return timeUnhappy;
     }

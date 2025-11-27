@@ -13,11 +13,6 @@ public class MidCarePet extends Pet {
 
     private static final Image MID_CARE_IMAGE = UI.loadImage("pets/Tigaotchi.png");
 
-    public MidCarePet(int sceneSize) {
-        super(sceneSize);
-        this.isEvolved = true;
-    }
-
     public MidCarePet(int sceneSize, int hunger, int happiness, int age) {
         super(sceneSize);
         this.isEvolved = true;
